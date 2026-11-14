@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="roman" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>License Manager — Dukaan Hisaab</title>
+<style>
+  :root{--bg:#eef2f6;--panel:#fff;--primary:#0f766e;--primary2:#0d6b64;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--ok:#16a34a;--danger:#e11d48;--r:14px;--shadow:0 1px 2px rgba(15,23,42,.06),0 10px 28px rgba(15,23,42,.08)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);padding:20px}
+  .wrap{max-width:1080px;margin:0 auto}
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0f766e,#14b8a6);display:grid;place-items:center;color:#fff;font-size:22px}
+  h1{font-size:18px} .sub{font-size:12px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:380px 1fr;gap:16px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
+  .card h2{font-size:14px;margin-bottom:12px}
+  label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+  input,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;background:#fff}
+  input:focus,select:focus{outline:2px solid #cce9e6;border-color:var(--primary)}
+  .field{margin-bottom:12px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .btn{border:none;border-radius:10px;padding:11px 14px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn.primary{background:var(--primary);color:#fff;width:100%}
+  .btn.primary:hover{background:var(--primary2)}
+  .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--text)}
+  .btn.sm{padding:6px 10px;font-size:12px}
+  .btn.danger{background:#fff1f2;border:1px solid #fecdd3;color:var(--danger)}
+  .out{display:none}
+  .out.show{display:block}
+  .code{width:100%;height:88px;resize:none;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:monospace;font-size:11px;background:#f8fafc;color:#0f172a}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:start;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;padding:8px 6px;border-bottom:1px solid var(--line)}
+  td{padding:9px 6px;border-bottom:1px solid #f1f5f9}
+  tr:last-child td{border-bottom:none}
+  .money{font-weight:700;white-space:nowrap}
+  .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:700;background:#e6f4f2;color:#0f766e}
+  .muted{color:var(--muted)}
+  .copy{background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:11px;font-weight:700;cursor:pointer}
+  .hint{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6}
+  .statrow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .stat{flex:1;min-width:110px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:10px}
+  .stat .l{font-size:10.5px;color:var(--muted)} .stat .v{font-size:18px;font-weight:800}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="logo">🔑</div>
+    <div>
+      <h1>License Manager</h1>
+      <div class="sub">Dukaan Hisaab — vendor tool (ye app client ko na dein)</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Form -->
+    <div>
+      <div class="card">
+        <h2>Naya License Code</h2>
+        <div class="field">
+          <label>Private Key (vendor — sirf aap ke browser mein save hoti hai)</label>
+          <input id="priv" type="password" placeholder="64-char hex private key">
+        </div>
+        <div class="field">
+          <label>Client / Dukaan ka Naam</label>
+          <input id="client" placeholder="Al-Madina Restaurant">
+        </div>
+        <div class="field">
+          <label>Device ID</label>
+          <input id="device" placeholder="DEV-XXXXXXXX">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Duration</label>
+            <input id="dur" type="number" min="1" value="1">
+          </div>
+          <div class="field">
+            <label>Unit</label>
+            <select id="unit">
+              <option value="months">Months</option>
+              <option value="days">Days</option>
+              <option value="hours">Hours</option>
+              <option value="minutes">Minutes</option>
+            </select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Grace (days)</label>
+            <input id="grace" type="number" min="0" value="3">
+          </div>
+          <div class="field">
+            <label>Price (Rs)</label>
+            <input id="price" type="number" min="0" value="0">
+          </div>
+        </div>
+        <button class="btn primary" id="gen">Generate Code</button>
+        <div class="hint">Aap ka client app ki Activation screen par jo <b>Device ID</b> dikhta hai, wahi yahan daalein.</div>
+      </div>
+
+      <div class="card out" id="out">
+        <h2>Generated</h2>
+        <div class="row3">
+          <div class="stat"><div class="l">Plan</div><div class="v" id="oPlan">—</div></div>
+          <div class="stat"><div class="l">Valid till</div><div class="v" id="oTill" style="font-size:13px">—</div></div>
+          <div class="stat"><div class="l">Price</div><div class="v" id="oPrice" style="font-size:15px">—</div></div>
+        </div>
+        <textarea class="code" id="oCode" readonly></textarea>
+        <button class="btn ghost sm" id="copyCode" style="margin-top:8px">📋 Copy code</button>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <h2 style="margin:0">Activation History</h2>
+          <div style="flex:1"></div>
+          <button class="btn danger sm" id="clear">Clear</button>
+        </div>
+        <div class="statrow">
+          <div class="stat"><div class="l">Total activations</div><div class="v" id="sCount">0</div></div>
+          <div class="stat"><div class="l">Total amount</div><div class="v" id="sAmount">Rs 0</div></div>
+          <div class="stat"><div class="l">Devices</div><div class="v" id="sDevices">0</div></div>
+        </div>
+        <div style="max-height:320px;overflow:auto">
+          <table>
+            <thead><tr><th>Date</th><th>Client</th><th>Device</th><th>Plan</th><th>Valid till</th><th>Price</th><th></th></tr></thead>
+            <tbody id="histBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Per Device Summary</h2>
+        <div style="max-height:260px;overflow:auto">
+          <table>
+            <thead><tr><th>Device</th><th>Client</th><th>Activations</th><th>Total duration</th><th>Total amount</th></tr></thead>
+            <tbody id="devBody"></tbody>
+          </table>
+        </div>
+        <div class="hint">Har device par kitni dafa, kitni muddat ke liye, aur kitne paise ki activation bani — sab yahan.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="license-lib.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
